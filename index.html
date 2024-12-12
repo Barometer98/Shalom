@@ -18,35 +18,10 @@
             overflow: hidden;
         }
 
-        .border {
-            border: 20px solid;
-            border-image-source: linear-gradient(45deg, #fff2cc, #ffdf93);
-            border-image-slice: 1;
-            padding: 20px;
-            text-align: center;
-            background: repeating-linear-gradient(45deg, transparent, transparent 15px, #fff2cc 15px, #fff2cc 30px), repeating-linear-gradient(-45deg, transparent, transparent 15px, #fff2cc 15px, #fff2cc 30px);
-            position: relative;
-        }
-
-        .border:before {
-            content: "🍍";
-            font-size: 2em;
-            position: absolute;
-            top: -30px;
-            left: -30px;
-        }
-
-        .border:after {
-            content: "🍍";
-            font-size: 2em;
-            position: absolute;
-            bottom: -30px;
-            right: -30px;
-        }
-
         h1 {
             font-size: 3em;
             color: #d17b00;
+            text-align: center;
         }
 
         .hidden {
@@ -67,68 +42,51 @@
             background: #e08600;
         }
 
-        /* Box container and animation */
-        .box-container {
-            width: 250px;
-            height: 150px;
-            position: relative;
-            display: inline-block;
-            margin: 20px;
-        }
-
-        .box {
+        /* Pineapple Confetti Container */
+        .pineapple-confetti {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            background-color: #d17b00;
-            position: absolute;
-            top: 0;
-            left: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #fff;
-            font-size: 1.5em;
-            border-radius: 10px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-            transform-origin: top;
-            animation: openBox 2s forwards;
+            pointer-events: none;
+            z-index: 1000;
+            overflow: hidden;
         }
 
-        .box .lid {
-            width: 100%;
-            height: 50%;
-            background-color: #fff;
+        .pineapple {
             position: absolute;
-            top: 0;
-            left: 0;
-            border-radius: 10px 10px 0 0;
-            animation: openLid 2s forwards;
+            font-size: 2rem;
+            animation: fall 5s linear infinite, sway 2s ease-in-out infinite;
         }
 
-        /* Animation for opening the box */
-        @keyframes openBox {
+        /* Falling Animation */
+        @keyframes fall {
             0% {
-                transform: scaleY(0);
+                transform: translateY(-100px);
+                opacity: 1;
             }
             100% {
-                transform: scaleY(1);
+                transform: translateY(100vh);
+                opacity: 0;
             }
         }
 
-        /* Animation for opening the lid */
-        @keyframes openLid {
-            0% {
-                transform: rotateX(0deg);
+        /* Swaying Animation */
+        @keyframes sway {
+            0%, 100% {
+                transform: translateX(0);
             }
-            100% {
-                transform: rotateX(-180deg);
+            50% {
+                transform: translateX(20px);
             }
         }
 
-        /* Congratulations page animation */
+        /* Congratulations Message */
         .congratulations {
             font-size: 3em;
             color: #28a745;
+            text-align: center;
             animation: popIn 1.5s ease-in-out, pulse 2s infinite;
         }
 
@@ -151,127 +109,46 @@
                 transform: scale(1.1);
             }
         }
-
-        /* Confetti effect */
-        .confetti {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1000;
-            opacity: 0;
-            animation: confettiFall 3s linear forwards;
-        }
-
-        .confetti .piece {
-            width: 30px;
-            height: 30px;
-            background-color: #ffeb3b;
-            clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
-            position: absolute;
-            animation: fall 2s infinite, rotate 2s infinite linear;
-        }
-
-        @keyframes confettiFall {
-            0% {
-                opacity: 0;
-            }
-            100% {
-                opacity: 1;
-            }
-        }
-
-        @keyframes fall {
-            0% {
-                transform: translateY(0);
-            }
-            100% {
-                transform: translateY(600px);
-            }
-        }
-
-        @keyframes rotate {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
-        }
     </style>
 </head>
 <body>
-    <div class="border">
-        <div id="splash">
-            <h1>Welcome to Maaz's Pineapple Bonanza!</h1>
-            <p>You've been entered into the Pineapple Bonanza! Get ready for your lucky box opening!</p>
-            <button onclick="startGame()">Start</button>
-        </div>
-
-        <div id="game" class="hidden">
-            <p>Click the button to open your box and try your luck!</p>
-            <button onclick="playGame()">Open Box</button>
-            <div id="result" class="result"></div>
-        </div>
-
-        <div id="final" class="hidden">
-            <h1 class="congratulations">Congratulations!</h1>
-            <p>You've won! Remember to say the words <strong>'Pineapple Bonanza'</strong> tomorrow!</p>
-        </div>
+    <div id="splash">
+        <h1>Welcome to Maaz's Pineapple Bonanza!</h1>
+        <p>Get ready for some pineapple confetti magic!</p>
+        <button onclick="startGame()">Start</button>
     </div>
 
-    <script>
-        let attempts = 0;
+    <div id="final" class="hidden">
+        <h1 class="congratulations">Congratulations!</h1>
+        <p>You did it! Enjoy the pineapple confetti! 🍍</p>
+    </div>
 
+    <div class="pineapple-confetti" id="confetti"></div>
+
+    <script>
         function startGame() {
             document.getElementById('splash').classList.add('hidden');
-            document.getElementById('game').classList.remove('hidden');
+            document.getElementById('final').classList.remove('hidden');
+            launchPineappleConfetti();
         }
 
-        function playGame() {
-            const resultDiv = document.getElementById('result');
-            attempts++;
+        function launchPineappleConfetti() {
+            const confettiContainer = document.getElementById('confetti');
+            const numberOfPineapples = 50; // Adjust the number of pineapples here
 
-            const boxContainer = document.createElement('div');
-            boxContainer.classList.add('box-container');
-            const box = document.createElement('div');
-            box.classList.add('box');
-            const lid = document.createElement('div');
-            lid.classList.add('lid');
-            box.appendChild(lid);
-            boxContainer.appendChild(box);
-            resultDiv.appendChild(boxContainer);
+            for (let i = 0; i < numberOfPineapples; i++) {
+                const pineapple = document.createElement('div');
+                pineapple.classList.add('pineapple');
+                pineapple.textContent = '🍍';
+                pineapple.style.left = Math.random() * 100 + 'vw';
+                pineapple.style.animationDelay = Math.random() * 5 + 's';
+                pineapple.style.fontSize = Math.random() * 1.5 + 1.5 + 'rem';
+                confettiContainer.appendChild(pineapple);
 
-            if (attempts < 3) {
-                setTimeout(() => {
-                    lid.style.animation = "none";  // Prevent re-triggering the lid animation
-                    box.textContent = "Sorry, you lost! Try again.";
-                    box.style.animation = "none";  // Prevent re-triggering the box animation
-                }, 2000);
-            } else {
-                setTimeout(() => {
-                    lid.style.animation = "none";
-                    box.textContent = "Congratulations! You won!";
-                    document.getElementById('game').classList.add('hidden');
-                    document.getElementById('final').classList.remove('hidden');
-                    launchConfetti();  // Trigger confetti effect
-                }, 2000);
-            }
-        }
-
-        function launchConfetti() {
-            const confettiContainer = document.createElement('div');
-            confettiContainer.classList.add('confetti');
-            document.body.appendChild(confettiContainer);
-
-            for (let i = 0; i < 100; i++) {
-                const piece = document.createElement('div');
-                piece.classList.add('piece');
-                piece.style.left = `${Math.random() * 100}%`;
-                piece.style.animationDelay = `${Math.random() * 2}s`;
-                confettiContainer.appendChild(piece);
+                // Remove pineapple after animation ends to prevent memory leaks
+                pineapple.addEventListener('animationend', () => {
+                    pineapple.remove();
+                });
             }
         }
     </script>
