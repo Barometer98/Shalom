@@ -66,31 +66,62 @@
             background: #e08600;
         }
 
-        .result {
+        /* Box container and animation */
+        .box-container {
+            width: 0;
+            height: 0;
+            overflow: hidden;
+            display: inline-block;
+            position: relative;
+            background-color: #d17b00;
+            margin: 0 auto;
+            animation: openBox 2s forwards;
+        }
+
+        .box-container .box {
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
+            padding: 20px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             font-size: 1.5em;
-            margin: 20px 0;
-            animation: boxOpen 2s ease-in-out;
+            color: #333;
+            opacity: 0;
+            animation: revealText 2s forwards;
+        }
+
+        /* Animation for opening the box */
+        @keyframes openBox {
+            0% {
+                width: 0;
+                height: 0;
+            }
+            100% {
+                width: 250px;
+                height: 150px;
+            }
+        }
+
+        /* Animation for revealing the text inside */
+        @keyframes revealText {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .congratulations {
             font-size: 2em;
             color: #28a745;
-        }
-
-        /* Animation for the box opening */
-        @keyframes boxOpen {
-            0% {
-                transform: scale(0);
-                opacity: 0;
-            }
-            50% {
-                transform: scale(1.1);
-                opacity: 0.5;
-            }
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
         }
     </style>
 </head>
@@ -126,10 +157,17 @@
             const resultDiv = document.getElementById('result');
             attempts++;
 
+            const boxContainer = document.createElement('div');
+            boxContainer.classList.add('box-container');
+            const box = document.createElement('div');
+            box.classList.add('box');
+            boxContainer.appendChild(box);
+            resultDiv.appendChild(boxContainer);
+
             if (attempts < 3) {
-                resultDiv.textContent = "Sorry, you lost! Try again.";
+                box.textContent = "Sorry, you lost! Try again.";
             } else {
-                resultDiv.textContent = "Congratulations! You won!";
+                box.textContent = "Congratulations! You won!";
                 document.getElementById('game').classList.add('hidden');
                 document.getElementById('final').classList.remove('hidden');
             }
