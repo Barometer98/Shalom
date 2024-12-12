@@ -67,7 +67,6 @@
             background: #e08600;
         }
 
-        /* Box container and animation */
         .box-container {
             width: 250px;
             height: 150px;
@@ -105,7 +104,6 @@
             animation: openLid 2s forwards;
         }
 
-        /* Animation for opening the box */
         @keyframes openBox {
             0% {
                 transform: scaleY(0);
@@ -115,7 +113,6 @@
             }
         }
 
-        /* Animation for opening the lid */
         @keyframes openLid {
             0% {
                 transform: rotateX(0deg);
@@ -125,7 +122,6 @@
             }
         }
 
-        /* Congratulations page animation */
         .congratulations {
             font-size: 3em;
             color: #28a745;
@@ -152,52 +148,20 @@
             }
         }
 
-        /* Confetti effect */
-        .confetti {
+        .pineapple {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1000;
-            opacity: 0;
-            animation: confettiFall 3s linear forwards;
+            font-size: 2em;
+            animation: fallPineapple 3s linear infinite;
         }
 
-        .confetti .piece {
-            width: 30px;
-            height: 30px;
-            background-color: #ffeb3b;
-            clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
-            position: absolute;
-            animation: fall 2s infinite, rotate 2s infinite linear;
-        }
-
-        @keyframes confettiFall {
+        @keyframes fallPineapple {
             0% {
-                opacity: 0;
-            }
-            100% {
+                transform: translateY(-100px);
                 opacity: 1;
             }
-        }
-
-        @keyframes fall {
-            0% {
-                transform: translateY(0);
-            }
             100% {
-                transform: translateY(600px);
-            }
-        }
-
-        @keyframes rotate {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
+                transform: translateY(100vh);
+                opacity: 0;
             }
         }
     </style>
@@ -218,7 +182,7 @@
 
         <div id="final" class="hidden">
             <h1 class="congratulations">Congratulations!</h1>
-            <p>You've won! You must now approach me at my stronghold, THE NORTHERN STAIRS, and say <strong>'Pineapple Bonanza'</strong> to claim your prize!</p>
+            <p>You've won! Remember to say the words <strong>'Pineapple Bonanza'</strong> tomorrow!</p>
         </div>
     </div>
 
@@ -256,22 +220,23 @@
                     box.textContent = "Congratulations! You won!";
                     document.getElementById('game').classList.add('hidden');
                     document.getElementById('final').classList.remove('hidden');
-                    launchConfetti();  // Trigger confetti effect
+                    launchPineapples();  // Trigger pineapple effect
                 }, 2000);
             }
         }
 
-        function launchConfetti() {
-            const confettiContainer = document.createElement('div');
-            confettiContainer.classList.add('confetti');
-            document.body.appendChild(confettiContainer);
-
+        function launchPineapples() {
             for (let i = 0; i < 100; i++) {
-                const piece = document.createElement('div');
-                piece.classList.add('piece');
-                piece.style.left = `${Math.random() * 100}%`;
-                piece.style.animationDelay = `${Math.random() * 2}s`;
-                confettiContainer.appendChild(piece);
+                const pineapple = document.createElement('div');
+                pineapple.classList.add('pineapple');
+                pineapple.textContent = '🍍';
+                pineapple.style.left = `${Math.random() * 100}vw`;
+                pineapple.style.animationDelay = `${Math.random() * 2}s`;
+                document.body.appendChild(pineapple);
+
+                pineapple.addEventListener('animationend', () => {
+                    pineapple.remove();
+                });
             }
         }
     </script>
