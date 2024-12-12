@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maaz's Pineapple Bonanza</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #fff2cc;
+            color: #333;
+        }
+
+        .border {
+            border: 20px solid;
+            border-image-source: linear-gradient(45deg, #fff2cc, #ffdf93);
+            border-image-slice: 1;
+            padding: 20px;
+            text-align: center;
+            background: repeating-linear-gradient(45deg, transparent, transparent 15px, #fff2cc 15px, #fff2cc 30px), repeating-linear-gradient(-45deg, transparent, transparent 15px, #fff2cc 15px, #fff2cc 30px);
+            position: relative;
+        }
+
+        .border:before {
+            content: "🍍";
+            font-size: 2em;
+            position: absolute;
+            top: -30px;
+            left: -30px;
+        }
+
+        .border:after {
+            content: "🍍";
+            font-size: 2em;
+            position: absolute;
+            bottom: -30px;
+            right: -30px;
+        }
+
+        h1 {
+            font-size: 3em;
+            color: #d17b00;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        button {
+            background: #d17b00;
+            color: white;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            border: none;
+            cursor: pointer;
+            margin: 10px;
+        }
+
+        button:hover {
+            background: #e08600;
+        }
+
+        .result {
+            font-size: 1.5em;
+            margin: 20px 0;
+        }
+
+        .congratulations {
+            font-size: 2em;
+            color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="border">
+        <div id="splash">
+            <h1>Welcome to Maaz's Pineapple Bonanza!</h1>
+            <p>You've been entered into the Pineapple Bonanza! Get ready for your lucky spins or box opens!</p>
+            <button onclick="startGame()">Start</button>
+        </div>
+
+        <div id="game" class="hidden">
+            <p>Click the button to try your luck!</p>
+            <button onclick="playGame()">Spin / Open Box</button>
+            <div id="result" class="result"></div>
+        </div>
+
+        <div id="final" class="hidden">
+            <h1 class="congratulations">Congratulations!</h1>
+            <p>You've won! Remember to say the words <strong>'Pineapple Bonanza'</strong> tomorrow!</p>
+        </div>
+    </div>
+
+    <script>
+        let attempts = 0;
+
+        function startGame() {
+            document.getElementById('splash').classList.add('hidden');
+            document.getElementById('game').classList.remove('hidden');
+        }
+
+        function playGame() {
+            const resultDiv = document.getElementById('result');
+            attempts++;
+
+            if (attempts < 3) {
+                resultDiv.textContent = "Sorry, you lost! Try again.";
+            } else {
+                resultDiv.textContent = "Congratulations! You won!";
+                document.getElementById('game').classList.add('hidden');
+                document.getElementById('final').classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
