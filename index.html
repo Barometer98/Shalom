@@ -69,11 +69,28 @@
         .result {
             font-size: 1.5em;
             margin: 20px 0;
+            animation: boxOpen 2s ease-in-out;
         }
 
         .congratulations {
             font-size: 2em;
             color: #28a745;
+        }
+
+        /* Animation for the box opening */
+        @keyframes boxOpen {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
     </style>
 </head>
@@ -81,13 +98,13 @@
     <div class="border">
         <div id="splash">
             <h1>Welcome to Maaz's Pineapple Bonanza!</h1>
-            <p>You've been entered into the Pineapple Bonanza! Get ready for your lucky spins or box opens!</p>
+            <p>You've been entered into the Pineapple Bonanza! Get ready for your lucky box opening!</p>
             <button onclick="startGame()">Start</button>
         </div>
 
         <div id="game" class="hidden">
-            <p>Click the button to try your luck!</p>
-            <button onclick="playGame()">Spin / Open Box</button>
+            <p>Click the button to open your box and try your luck!</p>
+            <button onclick="playGame()">Open Box</button>
             <div id="result" class="result"></div>
         </div>
 
